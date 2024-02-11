@@ -38,6 +38,14 @@ $(BUILD_DIR)/%.o: $(TEST_DIR)/%.cpp $(SRC_DIR)/chat_server.cpp $(SRC_DIR)/databa
 test: $(BUILD_DIR)/$(TEST_TARGET)
 	./$(BUILD_DIR)/$(TEST_TARGET)
 
+package:
+    cmake -DCMAKE_INSTALL_PREFIX=install .
+    make install
+    cpack --config CPackConfig.cmake
+
+uninstall:
+	rm -f $(BUILD_DIR)/$(TARGET)
+
 clean:
 	rm -rf $(BUILD_DIR)
 
