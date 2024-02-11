@@ -17,6 +17,7 @@ private:
     static constexpr int MAX_CLIENTS = 100;
     static constexpr int MESSAGE_LENGTH = 256;
 
+    std::string getLocalTime();
     std::string generateWelcomeMessage();
     std::string generateFunnyResponse(const std::string& clientMessage);
     
