@@ -21,6 +21,7 @@ private:
 
     std::string generateWelcomeMessage();
     std::string generateFunnyResponse(const std::string& clientMessage);   std::string getRandomString();
+    std::string trimString(const std::string& str);
 
     void handleClient(int clientSocket);
 };

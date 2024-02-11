@@ -54,6 +54,7 @@ void ChatServer::startHandlingClients (int serverSocket){
         std::cout<<"A new Client connection accepted" << std::endl;    
 
         std::thread clientThread(&ChatServer::handleClient, this, clientSocket);
+        
         clientThread.detach();
     }
 }
@@ -87,10 +88,23 @@ std::string ChatServer::getRandomString()
     return randomStr;
 }
 
+// Function to remove leading and trailing whitespace (including newline characters)
+std::string ChatServer::trimString(const std::string& str) {
+    size_t start = str.find_first_not_of(" \t\n\r");
+    size_t end = str.find_last_not_of(" \t\n\r");
+
+    if (start == std::string::npos || end == std::string::npos) {
+        // The string is empty or contains only whitespace
+        return "";
+    }
+
+    return str.substr(start, end - start + 1);
+}
+
 std::string ChatServer::generateFunnyResponse(const std::string& clientMessage) {
     // Add your creativity to generate a funny response
     std::string resposne = getRandomString();
-    return "Crazy Robot says: " + clientMessage +resposne + "\n";
+    return "Crazy Robot says: " + trimString(clientMessage) + " " + resposne + "\n";
 }
 
 void ChatServer::handleClient(int clientSocket) {
