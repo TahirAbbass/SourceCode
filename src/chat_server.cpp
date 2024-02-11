@@ -67,13 +67,30 @@ std::string ChatServer::getLocalTime(){
 std::string ChatServer::generateWelcomeMessage() {
 
     std::string localTime = getLocalTime();
-    return "Welcome to the chat server!!! Login time: " + localTime;
+    return "Welcome to the chat server!!! Login time: " + localTime + "\n";
+}
+
+std::string ChatServer::getRandomString()
+{
+    std::vector<std::string> randomWords = {"Elon", "Musk", "Bill", "Gates", "Pak", "Server"};
+    std::string randomStr = "";
+
+    // Use current time as seed for random generator
+    srand(time(0));
+
+    for (int i = 0; i < 2; i++)//run two time
+        {
+            int randomNum = rand() % randomWords.size();
+            randomStr += randomWords[randomNum];
+        }
+    
+    return randomStr;
 }
 
 std::string ChatServer::generateFunnyResponse(const std::string& clientMessage) {
     // Add your creativity to generate a funny response
-    std::vector<std::string> randomWords = {"Elon", "Musk", "Bill", "Gates", "Pak"};
-    return "Crazy Robot says: " + clientMessage + " abracadabra";
+    std::string resposne = getRandomString();
+    return "Crazy Robot says: " + clientMessage +resposne + "\n";
 }
 
 void ChatServer::handleClient(int clientSocket) {
