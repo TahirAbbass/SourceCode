@@ -1,5 +1,6 @@
 CC := g++
 CFLAGS := -std=c++17 -pthread
+LFLAGS := -l sqlite3
 TARGET := chat_server
 
 INC_DIR := inc
@@ -14,10 +15,10 @@ INC := -I$(INC_DIR)
 all: $(BUILD_DIR)/$(TARGET)
 
 $(BUILD_DIR)/$(TARGET): $(OBJ)
-	$(CC) $(CFLAGS) $(INC) $^ -o $@
+	$(CC) $(CFLAGS) $(INC) $^ -o $@ $(LFLAGS)
 
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.cpp | $(BUILD_DIR)
-	$(CC) $(CFLAGS) $(INC) -c $< -o $@
+	$(CC) $(CFLAGS) $(INC) -c $< -o $@ $(LFLAGS)
 
 $(BUILD_DIR):
 	mkdir -p $@

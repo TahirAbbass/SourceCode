@@ -3,11 +3,13 @@
 
 #include <string>
 #include <vector>
+#include <memory>
+#include "../inc/database_manager.h"
 
 class ChatServer
 {
 public:
-    ChatServer();
+    ChatServer(DatabaseManager* dbManager);
     ~ChatServer();
 
     int start();
@@ -17,6 +19,8 @@ private:
     static constexpr int PORT = 12345;
     static constexpr int MAX_CLIENTS = 100;
     static constexpr int MESSAGE_LENGTH = 256;
+
+    DatabaseManager* pDBManager;
 
     std::string getLocalTime();
 

@@ -9,9 +9,13 @@
 #include <unistd.h>
 #include <arpa/inet.h>
 
-ChatServer::ChatServer() {}
+ChatServer::ChatServer(DatabaseManager* dbManager) {
+    pDBManager = dbManager;
+}
 
-ChatServer::~ChatServer() {}
+ChatServer::~ChatServer() {
+    delete pDBManager;
+}
 
 int ChatServer::start()
 {
@@ -146,7 +150,12 @@ void ChatServer::handleClient(int clientSocket)
             return;
         }
 
+        std::string clientMsgTime = getLocalTime();
+
+        //send message back to client from Chat Server
         std::string response = generateFunnyResponse(clientMessage);
         send(clientSocket, response.c_str(), response.length(), 0);
+
+        pDBManager->insertMessage(clientMessage, clientMsgTime);
     }
 }
