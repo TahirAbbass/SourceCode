@@ -4,13 +4,14 @@
 #include <string>
 #include <vector>
 
-class ChatServer {
+class ChatServer
+{
 public:
     ChatServer();
     ~ChatServer();
 
     int start();
-    void startHandlingClients (int serverSocket);
+    void startHandlingClients(int serverSocket);
 
 private:
     static constexpr int PORT = 12345;
@@ -20,10 +21,11 @@ private:
     std::string getLocalTime();
 
     std::string generateWelcomeMessage();
-    std::string generateFunnyResponse(const std::string& clientMessage);   std::string getRandomString();
-    std::string trimString(const std::string& str);
+    std::string generateFunnyResponse(const std::string &clientMessage);
+    std::string getRandomString();
+    std::string trimString(const std::string &str);
 
     void handleClient(int clientSocket);
 };
 
-#endif  // CHAT_SERVER_H
+#endif // CHAT_SERVER_H
