@@ -25,7 +25,6 @@ void DatabaseManager::createTable() {
 }
 
 void DatabaseManager::insertMessage(const std::string& message, const std::string& timestamp) {
-    //std::string timestamp = "2024-02-11 12:34:56";  // Replace with your timestamp logic
     
     std::string query = "INSERT INTO chat_messages (message, timestamp) VALUES ('" + message + "', '" + timestamp + "');";
     

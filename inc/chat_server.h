@@ -28,8 +28,6 @@ private:
 
     DatabaseManager* pDBManager;
 
-
-
     void handleClient(int clientSocket);
 };
 
