@@ -4,6 +4,7 @@
 #include <cstring>
 #include <ctime>
 #include <cstdlib>
+#include <string>
 
 #include <unistd.h>
 #include <arpa/inet.h>
@@ -95,7 +96,7 @@ std::string ChatServer::trimString(const std::string& str) {
 
     if (start == std::string::npos || end == std::string::npos) {
         // The string is empty or contains only whitespace
-        return "";
+        return str;
     }
 
     return str.substr(start, end - start + 1);
@@ -123,7 +124,7 @@ void ChatServer::handleClient(int clientSocket) {
 
         std::string clientMessage(buffer);
 
-        if (clientMessage == "quit") {
+        if (trimString(clientMessage) == "quit") {
             send(clientSocket, "Goodbye! Closing connection.", 30, 0);
             close(clientSocket);
             return;
