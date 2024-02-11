@@ -18,9 +18,9 @@ private:
     static constexpr int MESSAGE_LENGTH = 256;
 
     std::string getLocalTime();
+
     std::string generateWelcomeMessage();
-    std::string generateFunnyResponse(const std::string& clientMessage);
-    std::string getRandomString();
+    std::string generateFunnyResponse(const std::string& clientMessage);   std::string getRandomString();
 
     void handleClient(int clientSocket);
 };
