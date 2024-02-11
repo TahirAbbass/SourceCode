@@ -1,6 +1,6 @@
 CC := g++
 CFLAGS := -std=c++17 -pthread
-LFLAGS := -lsqlite3 -lgtest
+LFLAGS := -lsqlite3 -lgtest -lgmock
 TARGET := chat_server
 TEST_TARGET := MyTests
 

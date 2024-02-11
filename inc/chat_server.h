@@ -14,6 +14,12 @@ public:
 
     int start();
     void startHandlingClients(int serverSocket);
+    std::string getLocalTime();
+
+    std::string generateWelcomeMessage();
+    std::string generateFunnyResponse(const std::string &clientMessage);
+    std::string getRandomString();
+    std::string trimString(const std::string &str);
 
 private:
     static constexpr int PORT = 12345;
@@ -22,12 +28,7 @@ private:
 
     DatabaseManager* pDBManager;
 
-    std::string getLocalTime();
 
-    std::string generateWelcomeMessage();
-    std::string generateFunnyResponse(const std::string &clientMessage);
-    std::string getRandomString();
-    std::string trimString(const std::string &str);
 
     void handleClient(int clientSocket);
 };

@@ -15,6 +15,10 @@ public:
 
     void createTable();
     void insertMessage(const std::string &message, const std::string& timestamp);
+    
+    //for testing
+    bool tableExists(const std::string &tableName);
+    bool doesMessageExist(const std::string &message);
 };
 
 #endif
