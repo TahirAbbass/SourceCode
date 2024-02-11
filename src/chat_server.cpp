@@ -12,7 +12,7 @@ ChatServer::ChatServer() {}
 
 ChatServer::~ChatServer() {}
 
-void ChatServer::start() {
+int ChatServer::start() {
     int serverSocket = socket(AF_INET, SOCK_STREAM, 0);
     if (serverSocket == -1) {
         perror("Socket creation failed");
@@ -33,6 +33,11 @@ void ChatServer::start() {
         perror("Listen failed");
         exit(EXIT_FAILURE);
     }
+
+    return serverSocket;
+}
+
+void ChatServer::startHandlingClients (int serverSocket){
 
     while (true) {
         sockaddr_in clientAddress;

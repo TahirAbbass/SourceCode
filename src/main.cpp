@@ -2,6 +2,8 @@
 
 int main() {
     ChatServer server;
-    server.start();
+    int serverSocket = server.start();
+    server.startHandlingClients(serverSocket);
+
     return 0;
 }

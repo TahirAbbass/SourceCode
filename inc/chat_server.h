@@ -9,15 +9,17 @@ public:
     ChatServer();
     ~ChatServer();
 
-    void start();
+    int start();
+    void startHandlingClients (int serverSocket);
 
 private:
     static constexpr int PORT = 12345;
-    static constexpr int MAX_CLIENTS = 2;
+    static constexpr int MAX_CLIENTS = 100;
     static constexpr int MESSAGE_LENGTH = 256;
 
     std::string generateWelcomeMessage();
     std::string generateFunnyResponse(const std::string& clientMessage);
+    
     void handleClient(int clientSocket);
 };
 
