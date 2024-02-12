@@ -1,4 +1,4 @@
-Notes on How to Run the Program
+Notes on How to Run the Multi-threaded Chat Application
 
 Steps to Compile & Run Chat Server:
     *make clean
@@ -15,6 +15,6 @@ Generate Package for chat server:
     *cmake ..
     *make package
 
-To Run Client:
+To Run Client use:
 nc 127.0.0.1 12345
 
