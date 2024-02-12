@@ -20,10 +20,12 @@ ChatServer::ChatServer(DatabaseManager* dbManager) {
     statusThread = std::thread(&ChatServer::printServerStatus, this);
 }
 
+// Destructor for ChatServer class.
 ChatServer::~ChatServer() {
     delete pDBManager;
 }
 
+// Initiates the chat server, binds to a specified port, and starts listening for client connections.
 int ChatServer::start()
 {
     int serverSocket = socket(AF_INET, SOCK_STREAM, 0);
@@ -58,6 +60,7 @@ int ChatServer::start()
     return serverSocket;
 }
 
+//Handles incoming client connections in a loop, each in a separate thread.
 void ChatServer::startHandlingClients(int serverSocket)
 {
     // Set the server start time
@@ -86,6 +89,7 @@ void ChatServer::startHandlingClients(int serverSocket)
     }
 }
 
+//Returns the current local time as a string.
 std::string ChatServer::getLocalTime()
 {
     std::time_t now = std::time(nullptr);
@@ -93,6 +97,7 @@ std::string ChatServer::getLocalTime()
     return localTime;
 }
 
+//Generates a welcome message including the current login time.
 std::string ChatServer::generateWelcomeMessage()
 {
 
@@ -100,6 +105,7 @@ std::string ChatServer::generateWelcomeMessage()
     return "Welcome to the chat server!!! Login time: " + localTime + "\n";
 }
 
+//Generates a random string from a predefined set of words.
 std::string ChatServer::getRandomString()
 {
     std::vector<std::string> randomWords = {"Elon", "Musk", "Bill", "Gates", "Pak", "Server"};
@@ -132,6 +138,7 @@ std::string ChatServer::trimString(const std::string &str)
     return str.substr(start, end - start + 1);
 }
 
+// Generates a funny response based on the client's message to reply back.
 std::string ChatServer::generateFunnyResponse(const std::string &clientMessage)
 {
     // Add your creativity to generate a funny response
@@ -139,6 +146,7 @@ std::string ChatServer::generateFunnyResponse(const std::string &clientMessage)
     return "Crazy Robot says: " + trimString(clientMessage) + " " + resposne + "\n";
 }
 
+// Handles communication with a specific client, including sending a welcome message and responding to messages.
 void ChatServer::handleClient(int clientSocket)
 {
     std::string welcomeMessage = generateWelcomeMessage();
@@ -177,6 +185,7 @@ void ChatServer::handleClient(int clientSocket)
     }
 }
 
+// Returns the server's uptime in minutes and seconds.
 std::string ChatServer::getUptime()
 {
     auto now = std::chrono::system_clock::now();
@@ -189,11 +198,13 @@ std::string ChatServer::getUptime()
     return time;
 }
 
+//Returns the number of active client connections.
 int ChatServer::getActiveConnections()
 {
     return activeConnections;
 }
 
+// Continuously prints the server's active connections and uptime to the console.
 void ChatServer::printServerStatus()
 {
     std::cout << std::endl;
@@ -210,6 +221,7 @@ void ChatServer::printServerStatus()
     std::cout << std::endl;
 }
 
+// Handles the Ctrl+C signal to gracefully shut down the server.
 void ChatServer::handleSignal(int signum)
 {
     if (signum == SIGINT)
