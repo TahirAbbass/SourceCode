@@ -8,6 +8,7 @@ int main()
 
     ChatServer server (&dbManager);
     int serverSocket = server.start();
+    server.startDashboard();
     server.startHandlingClients(serverSocket);
 
     return 0;

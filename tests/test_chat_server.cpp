@@ -26,7 +26,7 @@ protected:
 
     // Tear down after each test
     void TearDown() override {
-        delete chatServer;//chat server will also free dbManager object as it owns it
+        //delete chatServer;//chat server will also free dbManager object as it owns it
     }
 
     //std::unique_ptr<ChatServer> chatServer;
@@ -51,7 +51,7 @@ protected:
     DatabaseManager* dbManager;
 };
 
-// Test case for successful server start
+//Test case for successful server start
 TEST_F(ChatServerTest, StartServerSuccess) {
     // Call the start function
     int serverSocket = chatServer->start();

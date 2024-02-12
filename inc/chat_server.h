@@ -29,7 +29,7 @@ public:
     std::string getUptime();
     int getActiveConnections();
     void printServerStatus();
-
+    void startDashboard();
     // Signal handler for Ctrl+C
     static void handleSignal(int signum);
 

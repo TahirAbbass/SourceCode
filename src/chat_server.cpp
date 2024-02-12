@@ -15,13 +15,11 @@ ChatServer::ChatServer(DatabaseManager* dbManager) {
     pDBManager = dbManager;
     activeConnections = 0;
     //stopServer = false;
-
-    // Start the thread for printing server status
-    statusThread = std::thread(&ChatServer::printServerStatus, this);
 }
 
 // Destructor for ChatServer class.
 ChatServer::~ChatServer() {
+    statusThread.join();
     delete pDBManager;
 }
 
@@ -230,4 +228,10 @@ void ChatServer::handleSignal(int signum)
         //stopServer = true;
         exit(EXIT_FAILURE);
     }
+}
+
+void ChatServer::startDashboard()
+{
+    // Start the thread for printing server status
+    statusThread = std::thread(&ChatServer::printServerStatus, this);
 }
