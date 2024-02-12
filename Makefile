@@ -39,14 +39,14 @@ test: $(BUILD_DIR)/$(TEST_TARGET)
 	./$(BUILD_DIR)/$(TEST_TARGET)
 
 package:
-    cmake -DCMAKE_INSTALL_PREFIX=install .
-    make install
-    cpack --config CPackConfig.cmake
+	cmake -DCMAKE_INSTALL_PREFIX=install .
+	make install
+	cpack --config CPackConfig.cmake
 
 uninstall:
 	rm -f $(BUILD_DIR)/$(TARGET)
 
 clean:
-	rm -rf $(BUILD_DIR)
+	rm -rf $(BUILD_DIR) *.db
 
 .PHONY: all clean

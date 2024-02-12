@@ -1,16 +1,23 @@
-#include "chat_server.h"
 #include <iostream>
 #include <thread>
 #include <cstring>
 #include <ctime>
 #include <cstdlib>
 #include <string>
-
+#include <sstream> // Include the necessary header for std::ostringstream
+#include <csignal>
 #include <unistd.h>
 #include <arpa/inet.h>
+#include <atomic>
+#include "../inc/chat_server.h"
 
 ChatServer::ChatServer(DatabaseManager* dbManager) {
     pDBManager = dbManager;
+    activeConnections = 0;
+    //stopServer = false;
+
+    // Start the thread for printing server status
+    statusThread = std::thread(&ChatServer::printServerStatus, this);
 }
 
 ChatServer::~ChatServer() {
@@ -43,6 +50,9 @@ int ChatServer::start()
         exit(EXIT_FAILURE);
     }
 
+    // Set up signal handler for Ctrl+C
+    signal(SIGINT, ChatServer::handleSignal);
+
     std::cout << "-------Chat Server Started-------" << std::endl;
     std::cout << "Chat Server Listening on: IP = 127.0.0.1 , PORT = " << PORT << std::endl;
     return serverSocket;
@@ -50,7 +60,10 @@ int ChatServer::start()
 
 void ChatServer::startHandlingClients(int serverSocket)
 {
+    // Set the server start time
+    startTime = std::chrono::system_clock::now();
 
+    //while (!stopServer)
     while (true)
     {
         sockaddr_in clientAddress;
@@ -63,7 +76,9 @@ void ChatServer::startHandlingClients(int serverSocket)
             continue;
         }
 
-        std::cout << "A new Client connection accepted" << std::endl;
+        activeConnections++;
+
+        // std::cout << "A new Client connection accepted" << std::endl;
 
         std::thread clientThread(&ChatServer::handleClient, this, clientSocket);
 
@@ -136,8 +151,9 @@ void ChatServer::handleClient(int clientSocket)
 
         if (bytesRead <= 0)
         {
-            std::cout << "Client disconnected." << std::endl;
+            //std::cout << "Client disconnected." << std::endl;
             close(clientSocket);
+            activeConnections--;
             return;
         }
 
@@ -145,8 +161,9 @@ void ChatServer::handleClient(int clientSocket)
 
         if (trimString(clientMessage) == "quit")
         {
-            send(clientSocket, "Goodbye! Closing connection.", 30, 0);
+            send(clientSocket, "Goodbye! Closing connection.", 29, 0);
             close(clientSocket);
+            activeConnections--;
             return;
         }
 
@@ -157,5 +174,48 @@ void ChatServer::handleClient(int clientSocket)
         send(clientSocket, response.c_str(), response.length(), 0);
 
         pDBManager->insertMessage(clientMessage, clientMsgTime);
+    }
+}
+
+std::string ChatServer::getUptime()
+{
+    auto now = std::chrono::system_clock::now();
+    std::chrono::duration<double> uptime = now - startTime;
+
+    int secCount = (int)uptime.count();
+    int minutes = secCount / 60;
+
+    std::string time = std::to_string(minutes) + " min " + std::to_string(secCount) + " sec";
+    return time;
+}
+
+int ChatServer::getActiveConnections()
+{
+    return activeConnections;
+}
+
+void ChatServer::printServerStatus()
+{
+    std::cout << std::endl;
+    while (true)
+    {
+        // Print active connections and uptime every 500 milliseconds
+        std::cout << "\rActive Connections: " << getActiveConnections() 
+                  << " | Uptime: " <<  getUptime() 
+                  << std::flush;  // Flush the output to ensure it's displayed immediately
+                  
+        std::this_thread::sleep_for(std::chrono::milliseconds(500));
+    }
+    // Print a newline at the end to move to the next line after the loop ends
+    std::cout << std::endl;
+}
+
+void ChatServer::handleSignal(int signum)
+{
+    if (signum == SIGINT)
+    {
+        std::cout << "\n\nReceived Ctrl+C. Shutting down the server..." << std::endl;
+        //stopServer = true;
+        exit(EXIT_FAILURE);
     }
 }
