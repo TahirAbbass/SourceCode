@@ -15,4 +15,9 @@ Generate Package:
     *cmake ..
     *make package
 
+To Run Server:
+./build/chat_server
+
+To Run Client:
+nc 127.0.0.1 12345
 
